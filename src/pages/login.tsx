@@ -1,34 +1,37 @@
-import React, { useState } from 'react';
-import styles from './index.less';
+import React, { useEffect, useState } from 'react';
+import styles from './login.less';
 import { Button } from 'antd';
 import { loginApi } from '@/services/user';
 import { isSuccess } from '@/utils/request';
 import { saveToken } from '@/utils/token';
-import { connect } from 'umi';
+import { connect, history } from 'umi';
 import { UserModelState } from '@/models/user';
 
 interface Props {
   isLogged: boolean;
   login: (username: string, password: string) => any;
+  location: {
+    query: {
+      redirect: string;
+    };
+  };
 }
 
-const IndexPage: React.FC<Props> = props => {
-  //
-  // const [isLogged, setIsLogged] = useState(false);
-  //
-  // const login = async ()=>{
-  //
-  //   const result = await loginApi({userName: 'aaa', passWord: 'zzz'});
-  //   console.log(result);
-  //   if (isSuccess(result)) {
-  //     saveToken(result.data);
-  //     setIsLogged(true);
-  //   }
-  // }
+const Login: React.FC<Props> = props => {
   const onLogin = () => {
     props.login('aaaa', 'xxx');
   };
-  console.log('logged', props.isLogged);
+
+  useEffect(() => {
+    if (props.isLogged) {
+      if (props.location.query.redirect) {
+        history.push(props.location.query.redirect);
+      } else {
+        history.push('/');
+      }
+    }
+  }, [props.isLogged]);
+
   return (
     <div>
       <h1 className={styles.title}>Page index</h1>
@@ -49,4 +52,4 @@ export default connect(
       });
     },
   }),
-)(IndexPage);
+)(Login);

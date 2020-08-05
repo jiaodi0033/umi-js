@@ -1,6 +1,6 @@
 import { Effect, ImmerReducer, Reducer, Subscription } from 'umi';
 import { loginApi, LoginParam, LoginResult } from '@/services/user';
-import { saveToken } from '@/utils/token';
+import { getToken, isTokenValid, saveToken } from '@/utils/token';
 import { isSuccess } from '@/utils/request';
 
 export interface UserModelState {
@@ -12,6 +12,7 @@ export interface UserModelType {
   state: UserModelState;
   effects: {
     login: Effect;
+    autoLogin: Effect;
   };
   reducers: {
     setIsLogged: Reducer<UserModelState>;
@@ -19,12 +20,35 @@ export interface UserModelType {
   subscriptions: { setup: Subscription };
 }
 
+/**
+ * 1. 登录状态检测
+ * 2. 用户登录
+ * 3. 用户注册
+ */
 const IndexModel: UserModelType = {
   namespace: 'user',
   state: {
     isLogged: false,
   },
   effects: {
+    /**
+     * 自动登录, 判断当前本地Token是否有效，有效则转为已登录状态(isLogged)
+     */
+    *autoLogin(_, { put, call }) {
+      const token = getToken();
+
+      // 模拟耗时1000ms
+      yield call(
+        () =>
+          new Promise(resolve => {
+            setTimeout(resolve, 1000);
+          }),
+      );
+
+      if (isTokenValid(token)) {
+        yield put({ type: 'setIsLogged', payload: true });
+      }
+    },
     *login({ payload: { userName, passWord } }, { call, put }) {
       const result: LoginResult = yield call(loginApi, {
         userName,
@@ -47,7 +71,12 @@ const IndexModel: UserModelType = {
     },
   },
   subscriptions: {
-    setup({ dispatch, history }) {},
+    setup({ dispatch, history }) {
+      dispatch({
+        type: 'autoLogin',
+      });
+    },
   },
 };
+
 export default IndexModel;

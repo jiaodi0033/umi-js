@@ -4,7 +4,7 @@ interface Token {
 }
 
 const _key_in_storage = '__token';
-const _safe_duration_seconds = 2 * 3600;
+const _safe_duration_seconds = 1 * 3600;
 /**
  * 从本地存储获取Token
  */
@@ -29,5 +29,6 @@ export function saveToken(token: Token) {
 export function isTokenValid(token: Token | null): boolean {
   if (token === null) return false;
   const currMills = new Date().getTime();
+  console.log(token.expiresAt, currMills, token.expiresAt - currMills);
   return token.expiresAt - currMills > _safe_duration_seconds * 1000;
 }
