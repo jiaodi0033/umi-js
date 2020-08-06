@@ -6,6 +6,11 @@ export default defineConfig({
   },
   routes: [
     {
+      path: '/',
+      exact: true,
+      redirect: '/todolist',
+    },
+    {
       path: '/todolist',
       component: '@/layout/Authorized',
       routes: [
@@ -18,6 +23,10 @@ export default defineConfig({
     {
       path: '/login',
       component: '@/pages/login',
+    },
+    {
+      path: '/register',
+      component: '@/pages/register',
     },
   ],
   proxy: {

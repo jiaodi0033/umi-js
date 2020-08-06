@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './login.less';
-import { Button } from 'antd';
+import { Button, Form, Input, Row } from 'antd';
 import { loginApi } from '@/services/user';
 import { isSuccess } from '@/utils/request';
 import { saveToken } from '@/utils/token';
@@ -17,10 +17,16 @@ interface Props {
   };
 }
 
+const layout = {
+  labelCol: { span: 0 },
+  wrapperCol: { span: 24 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 16 },
+};
+
 const Login: React.FC<Props> = props => {
-  const onLogin = () => {
-    props.login('aaaa', 'xxx');
-  };
+  const onLogin = () => {};
 
   useEffect(() => {
     if (props.isLogged) {
@@ -32,10 +38,51 @@ const Login: React.FC<Props> = props => {
     }
   }, [props.isLogged]);
 
+  const onFinish = (s: any) => {
+    props.login(s.userName, s.passWord);
+  };
+
   return (
-    <div>
-      <h1 className={styles.title}>Page index</h1>
-      <Button onClick={onLogin}>登录</Button>
+    <div
+      style={{
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <div style={{ width: 200 }}>
+        <h2 style={{ textAlign: 'center', width: '100%' }}>登录</h2>
+        <Form {...layout} name="login" onFinish={onFinish}>
+          <Form.Item
+            label=""
+            name="userName"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
+            <Input placeholder="用户名" />
+          </Form.Item>
+
+          <Form.Item
+            label=""
+            name="passWord"
+            rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input.Password placeholder="密码" />
+          </Form.Item>
+
+          <Form.Item>
+            <Row justify="space-around">
+              <Button type="default" onClick={() => history.push('/register')}>
+                注册
+              </Button>
+              <Button type="primary" htmlType="submit">
+                登录
+              </Button>
+            </Row>
+          </Form.Item>
+        </Form>
+      </div>
     </div>
   );
 };
