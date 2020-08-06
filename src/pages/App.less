@@ -1,0 +1,123 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .reactTodoList {
+    overflow: auto;
+    background: mediumaquamarine;
+    height: 400px;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  .Layout {
+    minheight: 400;
+    minwidth: 300;
+    maxheight: 600;
+    maxwidth: 700;
+    width: 70%;
+    height: 80%;
+    boxshadow: 0 0 16px rgba(200, 200, 200, 0.5);
+    background: rgba(123, 224, 126, 0.2);
+  }
+  /*.LogLayout{*/
+  /*  width: 100vw;*/
+  /*  height: 100vh;*/
+  /*  display: flex;*/
+  /*  justifyContent: 'center';*/
+  /*  alignItems: 'center'*/
+  /*}*/
+}
+header {
+  text-align: center;
+  line-height: 20px;
+}
+ul li {
+  margin: 0 auto;
+  border: 1px solid gray;
+  border-radius: 10px;
+  width: auto;
+  padding: 1px;
+}
+ul li {
+  list-style-type: none;
+  margin: 10px;
+  display: flex;
+}
+input {
+  margin: 5px;
+  display: flex;
+}
+ul li span {
+  flex: 1;
+}
+.delete,
+.addTodo {
+  width: 40px;
+  height: 30px;
+  color: red;
+  background-color: transparent;
+  border-radius: 10px;
+  margin-left: 20px;
+  outline: none;
+}
+.addTodo {
+  width: 80px;
+}
+footer {
+  padding: 10px;
+  maxheight: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  width: 100%;
+  display: flex;
+  alignitems: center;
+  boxsizing: border-box;
+}
+footer input {
+  height: 24px;
+  width: 220px;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid silver;
+}
+.reactTodoList {
+  overflow: auto;
+  padding: 10px;
+  height: 400px;
+}
