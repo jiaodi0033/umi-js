@@ -16,7 +16,7 @@ export default defineConfig({
       routes: [
         {
           path: './',
-          component: '@/pages/TodoList',
+          component: '@/pages/ToList',
         },
       ],
     },
@@ -31,7 +31,7 @@ export default defineConfig({
   ],
   proxy: {
     '/api': {
-      target: 'http://192.168.1.8:8080',
+      target: 'http://192.168.1.4:8080',
       changeOrigin: true,
     },
   },

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './login.less';
+import './login.less';
 import { Button, Form, Input, Row } from 'antd';
 import { loginApi } from '@/services/user';
 import { isSuccess } from '@/utils/request';
@@ -19,15 +19,13 @@ interface Props {
 
 const layout = {
   labelCol: { span: 0 },
-  wrapperCol: { span: 24 },
+  wrapperCol: { span: 30 },
 };
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
 const Login: React.FC<Props> = props => {
-  const onLogin = () => {};
-
   useEffect(() => {
     if (props.isLogged) {
       if (props.location.query.redirect) {
@@ -52,8 +50,8 @@ const Login: React.FC<Props> = props => {
         alignItems: 'center',
       }}
     >
-      <div style={{ width: 200 }}>
-        <h2 style={{ textAlign: 'center', width: '100%' }}>登录</h2>
+      <div style={{ width: 250 }}>
+        <h1 style={{ textAlign: 'center', width: '100%' }}>登录界面</h1>
         <Form {...layout} name="login" onFinish={onFinish}>
           <Form.Item
             label=""
