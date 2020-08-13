@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button, Form, Input, Row } from 'antd';
 import { history } from 'umi';
-import { registerApi } from '@/services/register';
+import { registerApi } from '@/services/user';
 import { isSuccess } from '@/utils/request';
+import './login.less';
 
 interface Props {}
 
@@ -13,12 +14,19 @@ const layout = {
 
 const Register: React.FC<Props> = props => {
   const onFinish = async (s: any) => {
-    const result = await registerApi({
-      userName: s.userName,
-      passWord: s.passWord,
-    });
-    if (isSuccess(result)) {
-      history.push('/login');
+    if (s.passWord != s.rpassWord) {
+      alert('密码不一致请重新输入');
+    } else {
+      const result = await registerApi({
+        userName: s.userName,
+        passWord: s.passWord,
+      });
+      if (isSuccess(result)) {
+        alert(result.msg);
+        history.push('/login');
+      } else {
+        alert(result.msg);
+      }
     }
   };
 
@@ -32,12 +40,13 @@ const Register: React.FC<Props> = props => {
         alignItems: 'center',
       }}
     >
-      <div style={{ width: 200 }}>
-        <h2 style={{ textAlign: 'center', width: '100%' }}>注册</h2>
+      <div style={{ width: 300 }}>
+        <h1 style={{ textAlign: 'center', width: '100%' }}>注册界面</h1>
 
         <Form {...layout} name="login" onFinish={onFinish}>
           <Form.Item
-            label=""
+            className="Name"
+            label="用户名："
             name="userName"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
@@ -45,13 +54,23 @@ const Register: React.FC<Props> = props => {
           </Form.Item>
 
           <Form.Item
-            label=""
+            className="Pswd"
+            label="密码 ："
             name="passWord"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password placeholder="密码" />
+            <Input.Password
+              placeholder="密码6-20位字符"
+              style={{ paddingLeft: 20 }}
+            />
           </Form.Item>
-
+          <Form.Item
+            label="确认密码："
+            name="rpassWord"
+            rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input.Password placeholder="再次输入密码" />
+          </Form.Item>
           <Form.Item>
             <Row justify="space-around">
               <Button type="default" onClick={() => history.goBack()}>

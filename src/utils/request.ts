@@ -20,10 +20,11 @@ request.interceptors.request.use(
     if (localToken !== null && isTokenValid(localToken)) {
       options.headers = {
         ...options.headers,
-        Authornization: `Bearer ${localToken.token}`,
+        Authorization: `Bearer ${localToken.token}`,
       };
     }
 
+    console.log(options);
     return { url, options };
   },
   { global: false },

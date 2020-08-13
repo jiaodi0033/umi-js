@@ -2,6 +2,7 @@ import { Effect, ImmerReducer, Reducer, Subscription } from 'umi';
 import { loginApi, LoginParam, LoginResult } from '@/services/user';
 import { getToken, isTokenValid, saveToken } from '@/utils/token';
 import { isSuccess } from '@/utils/request';
+import { history } from 'umi';
 
 export interface UserModelState {
   isLogged: boolean;
@@ -56,7 +57,11 @@ const IndexModel: UserModelType = {
       } as LoginParam);
       if (isSuccess(result)) {
         saveToken(result.data);
+        alert(result.msg);
         yield put({ type: 'setIsLogged', payload: true });
+      } else {
+        alert('用户名或密码错误，请重新输入');
+        history.push('/');
       }
     },
   },
