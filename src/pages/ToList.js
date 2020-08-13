@@ -1,12 +1,10 @@
-import React, { Component, Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Input, Button, Card, List, Form } from 'antd';
 import {
   deltodoitemApi,
   fetchTodolistApi,
-  FetchtodolistResult,
   updatetodolistApi,
 } from '../services/todolist';
-import { getToken } from '../utils/token';
 import { useState } from 'react';
 import { addtodoitemApi } from '../services/todolist';
 import { isSuccess } from '../utils/request';
@@ -24,6 +22,13 @@ const ToList = props => {
       }
     });
   }, []);
+  const upDate = () => {
+    fetchTodolistApi({}).then(value => {
+      if (isSuccess(value)) {
+        setList(value.data);
+      }
+    });
+  };
   const onFinish = s => {
     Add(s.description, false);
     s.description = '';
@@ -32,6 +37,7 @@ const ToList = props => {
   const Add = (description, finished) => {
     addtodoitemApi({ description, finished }).then(value => {
       alert(value.msg);
+      upDate();
     });
   };
   const Del = itemId => {
@@ -39,6 +45,7 @@ const ToList = props => {
     deltodoitemApi({ itemId }).then(value => {
       console.log(value.msg);
       alert(value.msg);
+      upDate();
     });
   };
   const Change = (id, description, finished) => {
@@ -49,14 +56,15 @@ const ToList = props => {
       finished: !finished,
     }).then(value => {
       alert(value.msg);
+      upDate();
     });
   };
   const Exit = () => {
     localStorage.clear();
   };
-  useEffect(() => {
-    props.fetch();
-  }, []);
+  // useEffect(() => {
+  //   props.fetch();
+  // }, []);
 
   return (
     <Card
@@ -67,7 +75,7 @@ const ToList = props => {
           <span>欢迎登录</span>
           <br />
           <Button style={{ padding: -20 }} onClick={() => Exit()}>
-            <a href="http://192.168.1.11:8001/todolist">退出</a>
+            <a href="http://192.168.1.11:8002/todolist">退出</a>
           </Button>
         </div>
       }
