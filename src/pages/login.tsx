@@ -4,6 +4,7 @@ import { Button, Form, Input, Row } from 'antd';
 import { loginApi } from '@/services/user';
 import { isSuccess } from '@/utils/request';
 import { saveToken } from '@/utils/token';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { connect, history } from 'umi';
 import { UserModelState } from '@/models/user';
 
@@ -49,6 +50,7 @@ const Login: React.FC<Props> = props => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        background: '#eeeae4',
       }}
     >
       <div style={{ width: 250 }}>
@@ -59,7 +61,10 @@ const Login: React.FC<Props> = props => {
             name="userName"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Input placeholder="用户名" />
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="用户名"
+            />
           </Form.Item>
 
           <Form.Item
@@ -67,7 +72,10 @@ const Login: React.FC<Props> = props => {
             name="passWord"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password placeholder="密码" />
+            <Input.Password
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              placeholder="密码"
+            />
           </Form.Item>
 
           <Form.Item>

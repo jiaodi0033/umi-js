@@ -3,6 +3,7 @@ import { Button, Form, Input, Row } from 'antd';
 import { history } from 'umi';
 import { registerApi } from '@/services/user';
 import { isSuccess } from '@/utils/request';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './login.less';
 
 interface Props {}
@@ -40,9 +41,10 @@ const Register: React.FC<Props> = props => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        background: '#eeeae4',
       }}
     >
-      <div style={{ width: 300 }}>
+      <div style={{ width: 300, background: '#c3c7c7' }}>
         <h1 style={{ textAlign: 'center', width: '100%' }}>注册界面</h1>
 
         <Form {...layout} name="login" form={form} onFinish={onFinish}>
@@ -52,7 +54,10 @@ const Register: React.FC<Props> = props => {
             name="userName"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Input placeholder="用户名" />
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="用户名"
+            />
           </Form.Item>
 
           <Form.Item
@@ -63,7 +68,7 @@ const Register: React.FC<Props> = props => {
           >
             <Input.Password
               placeholder="密码6-20位字符"
-              style={{ paddingLeft: 20 }}
+              prefix={<LockOutlined className="site-form-item-icon" />}
             />
           </Form.Item>
           <Form.Item
@@ -71,7 +76,10 @@ const Register: React.FC<Props> = props => {
             name="rpassWord"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password placeholder="再次输入密码" />
+            <Input.Password
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              placeholder="再次输入密码"
+            />
           </Form.Item>
           <Form.Item>
             <Row justify="space-around">

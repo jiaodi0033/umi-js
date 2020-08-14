@@ -38,13 +38,6 @@ const ToList = props => {
     });
   }, []);
 
-  const upDate = () => {
-    fetchTodolistApi({}).then(value => {
-      if (isSuccess(value)) {
-        setList(value.data);
-      }
-    });
-  };
   const [form] = Form.useForm();
   const onFinish = s => {
     Add(s.description, false);
@@ -97,15 +90,15 @@ const ToList = props => {
     >
       <Form name="add" layout="inline" form={form} onFinish={onFinish}>
         <Form.Item
-          style={{ width: '80%' }}
+          style={{ width: '80%', flex: 1 }}
           label=""
           name="description"
           rules={[{ required: true, message: 'Please input something!' }]}
         >
-          <Input placeholder="请输入待办事项" />
+          <Input placeholder="请输入待办事项" style={{ flex: 1 }} />
         </Form.Item>
         <Form.Item>
-          <Tooltip title="添加">
+          <Tooltip title="添加" style={{ flex: 1 }}>
             <Button
               type="primary"
               htmlType="submit"
@@ -119,8 +112,15 @@ const ToList = props => {
       <List style={{ background: '#fdfafc', height: 400, overflow: 'auto' }}>
         {list.map((item, index) => (
           <div key={index}>
-            <List.Item>
-              <Tooltip title="切换状态！">
+            <List.Item
+              style={{
+                width: '90%',
+                position: 'relative',
+                left: '5%',
+                flex: 1,
+              }}
+            >
+              <Tooltip title="切换状态！" style={{ flex: 1 }}>
                 <Button
                   type="primary"
                   onClick={() =>
@@ -133,10 +133,10 @@ const ToList = props => {
                   icon={item.finished ? <CheckOutlined /> : <InfoOutlined />}
                 />
               </Tooltip>
-              <span className={item.finished ? 'ok' : 'no'}>
+              <span style={{ flex: 1 }} className={item.finished ? 'ok' : 'no'}>
                 {item.description}
               </span>
-              <Tooltip title="删除">
+              <Tooltip title="删除" style={{ flex: 1 }}>
                 <Button
                   type="danger"
                   onClick={() => Del(item.itemId, index)}
