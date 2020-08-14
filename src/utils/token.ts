@@ -35,3 +35,7 @@ export function isTokenValid(token: Token | null): boolean {
   console.log('!!!!!!!!! TOKEN ALWAYS VALID !!!!!!');
   return true;
 }
+
+export function clearToken() {
+  localStorage.clear();
+}

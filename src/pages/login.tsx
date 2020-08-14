@@ -35,9 +35,10 @@ const Login: React.FC<Props> = props => {
       }
     }
   }, [props.isLogged]);
-
+  const [form] = Form.useForm();
   const onFinish = (s: any) => {
     props.login(s.userName, s.passWord);
+    form.setFieldsValue({ userName: '', passWord: '' });
   };
 
   return (
@@ -52,7 +53,7 @@ const Login: React.FC<Props> = props => {
     >
       <div style={{ width: 250 }}>
         <h1 style={{ textAlign: 'center', width: '100%' }}>登录界面</h1>
-        <Form {...layout} name="login" onFinish={onFinish}>
+        <Form {...layout} name="login" form={form} onFinish={onFinish}>
           <Form.Item
             label=""
             name="userName"

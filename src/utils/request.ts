@@ -6,6 +6,7 @@
  **/
 
 import { extend } from 'umi-request';
+import { history } from 'umi';
 import { getToken, isTokenValid } from '@/utils/token';
 
 const request = extend({});
@@ -36,7 +37,7 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response, options) => {
     if (response.status == 401) {
-      // ......
+      history.push('./login');
     }
     return response;
   },
@@ -46,7 +47,15 @@ request.interceptors.response.use(
 /**
  * 当返回状态码为4xx/5xx时, xxxxx
  */
-// ...
+request.interceptors.response.use(
+  (response, options) => {
+    if (response.status == 403 || response.status == 500) {
+      alert('请求错误！！！');
+    }
+    return response;
+  },
+  { global: false },
+);
 
 /**
  * 接口数据返回格式

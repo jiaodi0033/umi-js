@@ -13,6 +13,7 @@ const layout = {
 };
 
 const Register: React.FC<Props> = props => {
+  const [form] = Form.useForm();
   const onFinish = async (s: any) => {
     if (s.passWord != s.rpassWord) {
       alert('密码不一致请重新输入');
@@ -28,6 +29,7 @@ const Register: React.FC<Props> = props => {
         alert(result.msg);
       }
     }
+    form.setFieldsValue({ userName: '', passWord: '', rpassWord: '' });
   };
 
   return (
@@ -43,7 +45,7 @@ const Register: React.FC<Props> = props => {
       <div style={{ width: 300 }}>
         <h1 style={{ textAlign: 'center', width: '100%' }}>注册界面</h1>
 
-        <Form {...layout} name="login" onFinish={onFinish}>
+        <Form {...layout} name="login" form={form} onFinish={onFinish}>
           <Form.Item
             className="Name"
             label="用户名："

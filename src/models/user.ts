@@ -1,6 +1,6 @@
 import { Effect, ImmerReducer, Reducer, Subscription } from 'umi';
 import { loginApi, LoginParam, LoginResult } from '@/services/user';
-import { getToken, isTokenValid, saveToken } from '@/utils/token';
+import { getToken, isTokenValid, saveToken, clearToken } from '@/utils/token';
 import { isSuccess } from '@/utils/request';
 import { history } from 'umi';
 
@@ -14,6 +14,7 @@ export interface UserModelType {
   effects: {
     login: Effect;
     autoLogin: Effect;
+    logout: Effect;
   };
   reducers: {
     setIsLogged: Reducer<UserModelState>;
@@ -63,6 +64,13 @@ const IndexModel: UserModelType = {
         alert('用户名或密码错误，请重新输入');
         history.push('/');
       }
+    },
+    *logout(_, { put }) {
+      clearToken();
+      yield put({
+        type: 'setIsLogged',
+        payload: false,
+      });
     },
   },
   reducers: {

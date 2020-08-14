@@ -1,5 +1,13 @@
 import React, { useEffect } from 'react';
-import { Input, Button, Card, List, Form } from 'antd';
+import { Input, Button, Card, List, Form, Tooltip } from 'antd';
+import {
+  DeleteOutlined,
+  PlusOutlined,
+  CheckOutlined,
+  InfoOutlined,
+  UserSwitchOutlined,
+} from '@ant-design/icons';
+
 import {
   deltodoitemApi,
   fetchTodolistApi,
@@ -16,12 +24,20 @@ const ToList = props => {
   const [list, setList] = useState([]);
 
   useEffect(() => {
+    // (async ()=>{
+    //   const result = await fetchTodolistApi({});
+    //   if (isSuccess(value)) {
+    //     setList(value.data);
+    //   }
+    // })();
+
     fetchTodolistApi({}).then(value => {
       if (isSuccess(value)) {
         setList(value.data);
       }
     });
   }, []);
+
   const upDate = () => {
     fetchTodolistApi({}).then(value => {
       if (isSuccess(value)) {
@@ -29,95 +45,106 @@ const ToList = props => {
       }
     });
   };
+  const [form] = Form.useForm();
   const onFinish = s => {
     Add(s.description, false);
-    s.description = '';
+    form.setFieldsValue({ description: '' });
   };
 
   const Add = (description, finished) => {
     addtodoitemApi({ description, finished }).then(value => {
-      alert(value.msg);
-      upDate();
+      console.log(value);
+      setList([value.data, ...list]);
+      // upDate()
     });
   };
-  const Del = itemId => {
-    console.log(itemId);
+  const Del = (itemId, index) => {
+    console.log('======' + index);
     deltodoitemApi({ itemId }).then(value => {
-      console.log(value.msg);
-      alert(value.msg);
-      upDate();
+      // console.log(value.msg);
+      list.splice(index, 1);
+      console.log(list);
+      setList([...list]);
     });
   };
-  const Change = (id, description, finished) => {
-    console.log('======');
+  const Change = (id, description, finished, index) => {
     updatetodolistApi({
       itemId: id,
       description: description,
       finished: !finished,
     }).then(value => {
-      alert(value.msg);
-      upDate();
+      console.log(value.data);
+      list.splice(index, 1);
+      setList([...list, value.data]);
     });
   };
   const Exit = () => {
-    localStorage.clear();
+    props.logout();
   };
-  // useEffect(() => {
-  //   props.fetch();
-  // }, []);
 
   return (
     <Card
-      title="TodoList"
-      style={{ background: 'gainsboro', textAlign: 'center' }}
+      title={<h2>TodoList</h2>}
+      headStyle={{ background: 'gray' }}
+      style={{ background: 'gainsboro', textAlign: 'center', height: '100%' }}
       extra={
         <div>
-          <span>欢迎登录</span>
-          <br />
-          <Button style={{ padding: -20 }} onClick={() => Exit()}>
-            <a href="http://192.168.1.11:8002/todolist">退出</a>
-          </Button>
+          <Tooltip title="退出">
+            <Button onClick={() => Exit()} icon={<UserSwitchOutlined />} />
+          </Tooltip>
         </div>
       }
     >
-      <Form name="add" onFinish={onFinish}>
+      <Form name="add" layout="inline" form={form} onFinish={onFinish}>
         <Form.Item
+          style={{ width: '80%' }}
           label=""
           name="description"
           rules={[{ required: true, message: 'Please input something!' }]}
         >
-          <Input placeholder="请输入内容" />
+          <Input placeholder="请输入待办事项" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
-            添加
-          </Button>
+          <Tooltip title="添加">
+            <Button
+              type="primary"
+              htmlType="submit"
+              shape="circle"
+              icon={<PlusOutlined />}
+            />
+          </Tooltip>
         </Form.Item>
       </Form>
+      <br />
       <List style={{ background: '#fdfafc', height: 400, overflow: 'auto' }}>
-        {list.map(item => (
-          <div key={item.itemId}>
+        {list.map((item, index) => (
+          <div key={index}>
             <List.Item>
-              <Button
-                type="primary"
-                onClick={() =>
-                  Change(item.itemId, item.description, item.finished)
-                }
-                className={item.finished ? 'Yes' : 'No'}
-                style={{ marginRight: 10, width: 45 }}
-                size="small"
-                icon={item.finished ? '已完成' : '待做'}
-              />
+              <Tooltip title="切换状态！">
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    Change(item.itemId, item.description, item.finished, index)
+                  }
+                  className={item.finished ? 'Yes' : 'No'}
+                  // shape='circle'
+                  size="small"
+                  // icon={item.finished ? '已完成' : '待办 '}
+                  icon={item.finished ? <CheckOutlined /> : <InfoOutlined />}
+                />
+              </Tooltip>
               <span className={item.finished ? 'ok' : 'no'}>
                 {item.description}
               </span>
-              <Button
-                type="danger"
-                onClick={() => Del(item.itemId)}
-                style={{ marginRight: 10 }}
-                size="small"
-                icon="del"
-              />
+              <Tooltip title="删除">
+                <Button
+                  type="danger"
+                  onClick={() => Del(item.itemId, index)}
+                  size="small"
+                  shape="circle"
+                  icon={<DeleteOutlined />}
+                />
+              </Tooltip>
             </List.Item>
           </div>
         ))}
@@ -133,6 +160,11 @@ export default connect(
     fetch() {
       dispatch({
         type: 'todolist/get',
+      });
+    },
+    logout() {
+      dispatch({
+        type: 'user/logout',
       });
     },
   }),

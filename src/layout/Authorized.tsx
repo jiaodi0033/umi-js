@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect, history } from 'umi';
 import { UserModelState } from '@/models/user';
 import { Loading } from '@@/plugin-dva/connect';
-
+import { Spin } from 'antd';
 interface Props {
   isAutoLogging: boolean;
   isLogged: boolean;
@@ -34,11 +34,7 @@ const Authorized: React.FC<Props> = props => {
 
   return (
     <div>
-      {props.isAutoLogging
-        ? 'AutoLogging'
-        : props.isLogged
-        ? props.children
-        : '前往登录页面'}
+      {props.isAutoLogging ? '加载中...' : props.isLogged ? props.children : ''}
     </div>
   );
 };
